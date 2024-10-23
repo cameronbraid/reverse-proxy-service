@@ -53,7 +53,7 @@ where
     B: HttpBody + Send,
     B::Data: Send,
 {
-    Builder::default().build(NativeTlsConnector::new())
+  Builder::new(hyper_util::rt::TokioExecutor::new()).build(NativeTlsConnector::new())
 }
 
 /// With the default [`hyper_rustls::HttpsConnector`].
@@ -100,7 +100,7 @@ where
     let conn = conn.enable_http1();
     #[cfg(feature = "rustls-http2")]
     let conn = conn.enable_http2();
-    Builder::default().build(conn.build())
+    Builder::new(hyper_util::rt::TokioExecutor::new()).build(conn.build())
 }
 
 /// Default builder and given connector.
